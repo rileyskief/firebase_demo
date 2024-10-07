@@ -12,7 +12,7 @@ import 'app_state.dart';                                 // new
 import 'home_page.dart';
 
 void main() {
-   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(ChangeNotifierProvider(
     create: (context) => ApplicationState(),
@@ -20,6 +20,31 @@ void main() {
   ));
 
 }
+
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Firebase Meetup',
+      theme: ThemeData(
+        buttonTheme: Theme.of(context).buttonTheme.copyWith(
+              highlightColor: Colors.deepPurple,
+            ),
+        primarySwatch: Colors.deepPurple,
+        textTheme: GoogleFonts.robotoTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        useMaterial3: true,
+      ),
+      routerConfig: _router, // new
+  
+    );
+  }
+}
+
 final _router = GoRouter(
   routes: [
     GoRoute(
@@ -94,28 +119,3 @@ final _router = GoRouter(
     ),
   ],
 );
-
-class App extends StatelessWidget {
-  const App({super.key});
-  
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Firebase Meetup',
-      theme: ThemeData(
-        buttonTheme: Theme.of(context).buttonTheme.copyWith(
-              highlightColor: Colors.deepPurple,
-            ),
-        primarySwatch: Colors.deepPurple,
-        textTheme: GoogleFonts.robotoTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        useMaterial3: true,
-      ),
-      routerConfig: _router, // new
-  
-    );
-  }
-}
