@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCc6uvVyAmGWHRWGNhksBmpes-c394VDK8</string>
+	<string>AIzaSyCBY8lW2P0q2pjAmUSHtVhrIN5CaueG9ww</string>
 	<key>GCM_SENDER_ID</key>
-	<string>168250828483</string>
+	<string>437637425338</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.firebaseDemo</string>
 	<key>PROJECT_ID</key>
-	<string>fir-bbb7f</string>
+	<string>fir-flutter-codelab-f2ad8</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fir-bbb7f.appspot.com</string>
+	<string>fir-flutter-codelab-f2ad8.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:168250828483:ios:3904b8ffc952970b15e476</string>
+	<string>1:437637425338:ios:1a3501b31436b69e13fa83</string>
 </dict>
 </plist>

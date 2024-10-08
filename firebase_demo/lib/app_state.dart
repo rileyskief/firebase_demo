@@ -10,6 +10,20 @@ class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
   }
+  Future<DocumentReference> addMessageToGuestBook(String message) {
+    if (!_loggedIn) {
+      throw Exception('Must be logged in');
+    }
+
+    return FirebaseFirestore.instance
+        .collection('guestbook')
+        .add(<String, dynamic>{
+      'text': message,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+      'name': FirebaseAuth.instance.currentUser!.displayName,
+      'userId': FirebaseAuth.instance.currentUser!.uid,
+    });
+  }
 
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
@@ -30,5 +44,6 @@ class ApplicationState extends ChangeNotifier {
       }
       notifyListeners();
     });
+    
   }
 }
