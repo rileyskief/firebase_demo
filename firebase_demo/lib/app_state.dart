@@ -1,18 +1,33 @@
-import 'dart:async';                                     // new
+import 'dart:async';  
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'guest_book_message.dart'; 
 import 'firebase_options.dart';
-import 'guest_book_message.dart';                        // new
 
+
+int attendeeNum = 0;
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
   }
-  Future<DocumentReference> addMessageToGuestBook(String message) {
+int _attendees = 0;
+int get attendees => _attendees;
+  int _attending = 0;
+  StreamSubscription<DocumentSnapshot>? _attendingSubscription;
+
+  int get attendeeNum => _attending;
+
+  /*set attending(int attendeeNum) {
+    final userDoc = FirebaseFirestore.instance
+        .collection('attendees')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+      userDoc.set(<String, dynamic>{'attending': attendeeNum});
+  }*/
+Future<DocumentReference> addMessageToGuestBook(String message) {
     if (!_loggedIn) {
       throw Exception('Must be logged in');
     }
@@ -29,19 +44,30 @@ class ApplicationState extends ChangeNotifier {
 
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
-
   StreamSubscription<QuerySnapshot>? _guestBookSubscription;
   List<GuestBookMessage> _guestBookMessages = [];
   List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
-    Future<void> init() async {
+  Future<void> init() async {
+    int i = 0;
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
     FirebaseUIAuth.configureProviders([
       EmailAuthProvider(),
+      
     ]);
-    
+    FirebaseFirestore.instance
+        .collection('attendees')
+        .snapshots()
+        .listen((snapshot) {
+        for (var docSnapshot in snapshot.docs){
+          i += docSnapshot.get('attending') as int;
+        }
+      _attendees = i;
+      i =0;
+      notifyListeners();
+    });
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loggedIn = true;
@@ -61,31 +87,20 @@ class ApplicationState extends ChangeNotifier {
           }
           notifyListeners();
         });
+        _attendingSubscription = FirebaseFirestore.instance
+            .collection('attendees')
+            .doc(user.uid)
+            .snapshots()
+            .listen((snapshot) {
+          notifyListeners();
+        });
       } else {
         _loggedIn = false;
         _guestBookMessages = [];
         _guestBookSubscription?.cancel();
+        _attendingSubscription?.cancel();
       }
       notifyListeners();
     });
-  }
-
-  Future<void> init() async {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-
-    FirebaseUIAuth.configureProviders([
-      EmailAuthProvider(),
-    ]);
-
-    FirebaseAuth.instance.userChanges().listen((user) {
-      if (user != null) {
-        _loggedIn = true;
-      } else {
-        _loggedIn = false;
-      }
-      notifyListeners();
-    });
-    
   }
 }
