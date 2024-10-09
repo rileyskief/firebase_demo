@@ -8,7 +8,7 @@ import 'app_state.dart';                          // new
 import 'src/authentication.dart';                 // new
 import 'src/widgets.dart';
 import 'guest_book.dart';  
-import 'yes_or_no.dart';
+import 'yes_no_selection.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
