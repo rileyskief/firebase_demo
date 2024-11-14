@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
         _ => const Paragraph('No one going'),
       },
       if (appState.loggedIn) ...[
-        YesNoSelection(),
+        YesOrNo(),
         const Header('Discussion'),
         GuestBook(
           addMessage: (message) =>
